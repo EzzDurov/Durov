@@ -64,7 +64,7 @@ jobs:
           # Mirror exposes the unchanged API 82 compile-only artifact.
           root_gradle=root/'build.gradle'
           content=root_gradle.read_text()
-          content=content.replace('allprojects {\\n    repositories {', "allprojects {\\n    repositories {\\n        maven { url 'https://repository-cdn.liferay.com/nexus/content/repositories/gradle-plugins/' }\\n        maven { url 'https://archiva.interlocsolutions.com/archiva/repository/internal/' }")
+          content=content.replace('mavenCentral()', "maven { url 'https://repository-cdn.liferay.com/nexus/content/repositories/gradle-plugins/' }; mavenCentral()")
           root_gradle.write_text(content)
           import xml.etree.ElementTree as ET
           for module in ('app','common','krscript'):
