@@ -72,6 +72,8 @@ jobs:
               ET.parse(f)
               print('Translated resources OK',f)
           PY
+      - name: Translate layouts and add read-only system diagnostics
+        run: python3 translation/scene5-ru/enhance.py upstream
       - name: Build Russian APK (debug signed)
         working-directory: upstream
         run: |
