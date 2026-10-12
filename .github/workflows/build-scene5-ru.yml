@@ -23,17 +23,22 @@ jobs:
           repository: helloklf/vtools
           ref: scene5
           path: upstream
-      - name: Set up Java 11
+      - name: Set up Java 17 for Android SDK tools
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '11'
+          java-version: '17'
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
       - name: Install required Android tools
         run: |
           yes | sdkmanager --licenses >/dev/null || true
           sdkmanager --install "platforms;android-30" "build-tools;29.0.2" "ndk;21.0.6113669" "cmake;3.10.2.4988404"
+      - name: Switch to Java 11 for legacy Scene Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
       - name: Apply Russian translation, do not alter system settings
         run: |
           base64 -d translation/scene5-ru/ru-resources.zip.b64 > /tmp/ru-resources.zip
