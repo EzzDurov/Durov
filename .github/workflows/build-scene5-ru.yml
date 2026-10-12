@@ -60,6 +60,12 @@ jobs:
               s=path.read_text()
               if 'jcenter()' in s:
                   path.write_text(s.replace('jcenter()', 'mavenCentral()'))
+          # The original Xposed API was hosted on the defunct JCenter.
+          # Mirror exposes the unchanged API 82 compile-only artifact.
+          root_gradle=root/'build.gradle'
+          content=root_gradle.read_text()
+          content=content.replace('allprojects {\\n    repositories {', "allprojects {\\n    repositories {\\n        maven { url 'https://repository-cdn.liferay.com/nexus/content/repositories/gradle-plugins/' }\\n        maven { url 'https://archiva.interlocsolutions.com/archiva/repository/internal/' }")
+          root_gradle.write_text(content)
           import xml.etree.ElementTree as ET
           for module in ('app','common','krscript'):
               f=root/module/'src/main/res/values-ru/strings.xml'
