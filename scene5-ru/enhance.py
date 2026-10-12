@@ -119,4 +119,13 @@ print(f"Translated Java/Kotlin quoted literals: {code_translated}")
 print(f"Untranslated layout texts: {sum(len(v) for v in untranslated.values())} in {len(untranslated)} files")
 for filename, values in sorted(untranslated.items())[:30]:
     print("  " + filename + ": " + " | ".join(v[:85] for v in list(dict.fromkeys(values))[:3]))
+# Scene 5 uses sourceCompatibility 1.7 by default; the diagnostics screen needs Java 8 lambdas.
+gradle_file = upstream / "app/build.gradle"
+gradle_source = gradle_file.read_text(encoding="utf-8")
+assert "android {" in gradle_source
+gradle_file.write_text(gradle_source.replace("android {", """android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }""", 1), encoding="utf-8")
 print("Read-only diagnostics activity installed successfully")
