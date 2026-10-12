@@ -50,6 +50,7 @@ jobs:
           root=Path('upstream')
           gradle=root/'app/build.gradle'
           content=gradle.read_text()
+          content=content.replace("storeFile file('D:/omoarea.jks')", "storeFile file('omoarea-test.jks')")
           if 'resConfigs "zh"' not in content:
               raise SystemExit('Unknown source language configuration')
           gradle.write_text(content.replace('resConfigs "zh"','resConfigs "zh", "ru"'))
